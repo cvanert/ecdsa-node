@@ -49,6 +49,8 @@ function Transfer({ address, setBalance }) {
           privateKeyUint8Arr = [];
 
           cryptoData.signature = signature;
+          cryptoData.signatureHex = signature.toCompactHex();
+          console.log(cryptoData.signatureHex);
 
           cryptoData.recoveredPublicKey = signature.recoverPublicKey(cryptoData.message);
           cryptoData.recoveredPublicKeyHex = cryptoData.recoveredPublicKey.toHex();
@@ -56,7 +58,7 @@ function Transfer({ address, setBalance }) {
           let senderAddress = keccak256(cryptoData.recoveredPublicKey.toRawBytes().slice(1)).slice(-20);
           cryptoData.recoveredSenderAddress = toHex(senderAddress);
 
-          return `{r: ${signature.r}, s: ${signature.s}}`;
+          return cryptoData.signatureHex;
         } catch(e) {
           return alert("Reenter values from Uint8Array of Private Key, separated by commas (e.g., 1,2,3...). Remember to exclude enclosing brackets.");
         }
